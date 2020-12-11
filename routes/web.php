@@ -11,6 +11,16 @@
 |
 */
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ThreadController;
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/threads', [ThreadController::class, 'index']);
+Route::get('/threads/{thread}', [ThreadController::class, 'show']);
