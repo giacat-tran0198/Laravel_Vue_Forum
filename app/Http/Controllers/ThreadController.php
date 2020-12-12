@@ -9,6 +9,14 @@ use Illuminate\Http\Response;
 class ThreadController extends Controller
 {
     /**
+     * ThreadController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth')->only('store');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
@@ -32,12 +40,17 @@ class ThreadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return Response
      */
     public function store(Request $request)
     {
-        //
+        $thread = Thread::create([
+            'user_id' => auth()->id(),
+            'title' => $request->get('title'),
+            'body' => $request->get('body'),
+        ]);
+        return redirect($thread->path());
     }
 
     /**
@@ -65,7 +78,7 @@ class ThreadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @param Thread $thread
      * @return Response
      */
