@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Reply;
 use App\Models\Thread;
-use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -24,9 +23,9 @@ class ParticipateInForumTest extends TestCase
     /** @test */
     public function an_authenticated_user_many_participate_in_forum_threads()
     {
-        $this->actingAs($user = factory(User::class)->create());
-        $thread = factory(Thread::class)->create();
-        $reply = factory(Reply::class)->make();
+        $this->signIn();
+        $thread = create(Thread::class);
+        $reply = make(Reply::class);
         $this->post($thread->path() . '/replies', $reply->toArray());
         $this->get($thread->path())
             ->assertSee($reply->body);

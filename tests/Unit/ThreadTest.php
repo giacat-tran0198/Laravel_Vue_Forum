@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 
-use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,7 +21,7 @@ class ThreadTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->thread = factory(Thread::class)->create();
+        $this->thread = create(Thread::class);
     }
 
 
@@ -38,7 +37,7 @@ class ThreadTest extends TestCase
         $this->assertInstanceOf(User::class, $this->thread->creator);
     }
 
-    /** @test  */
+    /** @test */
     public function a_thread_can_add_a_reply()
     {
         $this->thread->addReply([

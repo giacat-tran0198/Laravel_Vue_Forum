@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-md-8 offset-md-2">
                 @foreach($thread->replies as $reply)
                     @include('threads.reply')
