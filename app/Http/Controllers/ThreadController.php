@@ -26,11 +26,7 @@ class ThreadController extends Controller
      */
     public function index(Channel $channel, ThreadFilter $filters)
     {
-        $threads = Thread::latest()->filter($filters);
-        if ($channel->exists) {
-            $threads = $threads->whereChannelId($channel->id);
-        }
-        $threads = $threads->get();
+        $threads = $this->getThreads($filters, $channel);
 
         return view('threads.index', compact('threads'));
     }
@@ -112,5 +108,20 @@ class ThreadController extends Controller
     public function destroy(Thread $thread)
     {
         //
+    }
+
+    /**
+     * @param ThreadFilter $filters
+     * @param Channel $channel
+     * @return Thread[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    protected function getThreads(ThreadFilter $filters, Channel $channel)
+    {
+        $threads = Thread::latest()->filter($filters);
+        if ($channel->exists) {
+            $threads = $threads->whereChannelId($channel->id);
+        }
+        $threads = $threads->get();
+        return $threads;
     }
 }
