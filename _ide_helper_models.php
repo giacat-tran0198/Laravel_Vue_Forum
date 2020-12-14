@@ -19,6 +19,8 @@ namespace App\Models{
  * @property string $slug
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Thread[] $threads
+ * @property-read int|null $threads_count
  * @method static \Illuminate\Database\Eloquent\Builder|Channel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Channel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Channel query()
@@ -70,6 +72,7 @@ namespace App\Models{
  * @property-read \App\Models\User $creator
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Reply[] $replies
  * @property-read int|null $replies_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Thread filter(\App\Filters\ThreadFilter $filters)
  * @method static \Illuminate\Database\Eloquent\Builder|Thread newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Thread newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Thread query()
