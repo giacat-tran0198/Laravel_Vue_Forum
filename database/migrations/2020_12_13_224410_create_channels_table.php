@@ -16,7 +16,7 @@ class CreateChannelsTable extends Migration
         Schema::create('channels', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 50)->unique();
-            $table->string('slug', 50)->unique()->nullable();
+            $table->string('slug', 50)->unique();
             $table->timestamps();
         });
     }

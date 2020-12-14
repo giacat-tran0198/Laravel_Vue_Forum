@@ -12,18 +12,69 @@
 
 namespace App\Models{
 /**
+ * App\Models\Channel
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Channel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Channel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Channel query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Channel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Channel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Channel whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Channel whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Channel whereUpdatedAt($value)
+ */
+	class Channel extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Reply
+ *
+ * @property int $id
+ * @property int $thread_id
+ * @property int $user_id
+ * @property string $body
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $owner
+ * @method static \Illuminate\Database\Eloquent\Builder|Reply newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reply newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reply query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reply whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reply whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reply whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reply whereThreadId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reply whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reply whereUserId($value)
+ */
+	class Reply extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Thread
  *
  * @property int $id
  * @property int $user_id
+ * @property int $channel_id
  * @property string $title
  * @property string $body
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Channel $channel
+ * @property-read \App\Models\User $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Reply[] $replies
+ * @property-read int|null $replies_count
  * @method static \Illuminate\Database\Eloquent\Builder|Thread newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Thread newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Thread query()
  * @method static \Illuminate\Database\Eloquent\Builder|Thread whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Thread whereChannelId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Thread whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Thread whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Thread whereTitle($value)
