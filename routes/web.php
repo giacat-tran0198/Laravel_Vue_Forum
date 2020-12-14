@@ -28,5 +28,6 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 //Route::get('/threads/create', [ThreadController::class, 'create']);
 //Route::post('/threads', [ThreadController::class, 'store']);
 //Route::get('/threads/{thread}', [ThreadController::class, 'show']);
-Route::resource('threads', 'ThreadController');
-Route::post('/threads/{thread}/replies', [ReplyController::class, 'store']);
+Route::resource('threads', 'ThreadController')->except('show');
+Route::post('/threads/{channel}/{thread}/replies', [ReplyController::class, 'store']);
+Route::get('/threads/{channel}/{thread}', [ThreadController::class, 'show'])->name('threads.show');
