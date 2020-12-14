@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <a href="#">{{$thread->creator->name}}</a> a posté:
+                        <a href="{{route('threads.index', ['by' => $thread->creator->name])}}">{{$thread->creator->name}}</a> a posté:
                         {{$thread->title}}
                     </div>
 
@@ -27,7 +27,7 @@
         @if(auth()->check())
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <form action="{{$thread->path().'/replies'}}" method="post">
+                    <form action="{{url($thread->path().'/replies')}}" method="post">
                         @csrf
                         <div class="form-group">
                             <textarea name="body" id="body" class="form-control" placeholder="Que voulez-vous dire?"

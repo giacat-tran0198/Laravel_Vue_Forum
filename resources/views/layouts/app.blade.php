@@ -35,9 +35,27 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('threads.index')}}">{{ __('Toutes les discussions') }}</a>
-                    </li>
+                    @if(auth()->check())
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLinkThread"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{__('Discussions')}}
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkThread">
+                                <a class="dropdown-item"
+                                   href="{{route('threads.index')}}">{{__('Toutes les discussions')}}</a>
+                                <a class="dropdown-item"
+                                   href="{{route('threads.index', ['by' => auth()->user()->name])}}">{{__('Mes discussion')}}</a>
+
+                            </div>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('threads.index')}}">{{ __('Toutes les discussions') }}</a>
+                        </li>
+                    @endif
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLinkChannel"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

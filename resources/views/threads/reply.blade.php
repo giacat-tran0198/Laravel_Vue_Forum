@@ -1,6 +1,6 @@
 <div class="card my-3">
     <div class="card-header">
-        <a href="#">
+        <a href="{{route('threads.index', ['by' => $reply->owner->name])}}">
             {{$reply->owner->name}}
         </a>
         a publié

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Channel;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -20,16 +21,25 @@ class ThreadController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @param Channel|null $channel
      * @return Response
      */
-    public function index(Channel $channel)
+    public function index(Request $request, Channel $channel)
     {
         if ($channel->exists) {
-            $threads = $channel->threads()->latest()->get();
+            $threads = $channel->threads()->latest();
         } else {
-            $threads = Thread::latest()->get();
+            $threads = Thread::latest();
         }
+
+        // si request('by'), nous devons filtrer par le nom d'utilisateur donné
+        if ($username = $request->get('by')){
+            $user = User::where('name', $username)->firstOrFail();
+            $threads->where('user_id', $user->id);
+        }
+
+        $threads = $threads->get();
 
         return view('threads.index', compact('threads'));
     }
