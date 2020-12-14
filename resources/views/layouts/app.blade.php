@@ -36,20 +36,24 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('threads.index')}}">{{ __('All Threads') }}</a>
+                        <a class="nav-link" href="{{route('threads.index')}}">{{ __('Toutes les discussions') }}</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLinkChannel"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Catégories
+                            {{__('Chaînes')}}
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkChannel">
                             @foreach(\App\Models\Channel::all() as $channel)
                                 <a class="dropdown-item"
-                                   href="{{route('threads.index.channel', ['channel' => $channel->slug])}}">{{$channel->name}}</a>
+                                   href="{{route('threads.index.channel', ['channel' => $channel->slug])}}">{{__($channel->name)}}</a>
                             @endforeach
                         </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('threads.create')}}">{{__('Nouvelle discussion')}}</a>
                     </li>
                 </ul>
 
