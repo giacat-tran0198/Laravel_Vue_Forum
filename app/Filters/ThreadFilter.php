@@ -31,6 +31,6 @@ class ThreadFilter extends Filter
     protected function popular()
     {
         $this->builder->getQuery()->orders = [];
-        return $this->builder->orderBy('replies_count', 'desc');
+        return $this->builder->orderByDesc('replies_count');
     }
 }
