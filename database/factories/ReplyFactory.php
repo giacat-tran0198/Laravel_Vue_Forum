@@ -8,7 +8,11 @@ use Faker\Generator as Faker;
 $factory->define(Reply::class, function (Faker $faker) {
     return [
         'body' => $faker->paragraph(),
-        'thread_id' => factory(Thread::class),
-        'user_id' => factory(User::class),
+        'thread_id' => function () {
+            return factory(Thread::class);
+        },
+        'user_id' => function () {
+            return factory(User::class);
+        },
     ];
 });
