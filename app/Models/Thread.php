@@ -3,15 +3,26 @@
 namespace App\Models;
 
 use App\Filters\ThreadFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
     protected $guarded = [];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function (Builder $builder) {
+            $builder->withCount('replies');
+        });
+    }
+
+
     public function path()
     {
-        return '/threads/' .$this->channel->slug.'/'. $this->id;
+        return '/threads/' . $this->channel->slug . '/' . $this->id;
     }
 
     public function replies()
