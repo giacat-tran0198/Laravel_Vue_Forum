@@ -35,6 +35,29 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Favorite
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $favorited_id
+ * @property string $favorited_type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Favorite newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Favorite newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Favorite query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereFavoritedId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereFavoritedType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereUserId($value)
+ */
+	class Favorite extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Reply
  *
  * @property int $id
@@ -43,6 +66,8 @@ namespace App\Models{
  * @property string $body
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Favorite[] $favorites
+ * @property-read int|null $favorites_count
  * @property-read \App\Models\User $owner
  * @method static \Illuminate\Database\Eloquent\Builder|Reply newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Reply newQuery()
