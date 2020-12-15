@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ThreadFilter extends Filter
 {
-    protected $filters = ['by'];
+    protected $filters = ['by', 'popular'];
 
     /**
      * Filtrer la requête par un nom d'utilisateur
@@ -21,5 +21,16 @@ class ThreadFilter extends Filter
     {
         $user = User::where('name', $username)->firstOrFail();
         return $this->builder->where('user_id', $user->id);
+    }
+
+    /**
+     * Filtrez la requête en fonction des fils les plus populaires.
+     *
+     * @return Builder
+     */
+    protected function popular()
+    {
+        $this->builder->getQuery()->orders = [];
+        return $this->builder->orderBy('replies_count', 'desc');
     }
 }

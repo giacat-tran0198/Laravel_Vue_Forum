@@ -28,6 +28,10 @@ class ThreadController extends Controller
     {
         $threads = $this->getThreads($filters, $channel);
 
+        if (\request()->wantsJson()) {
+            return $threads;
+        }
+
         return view('threads.index', compact('threads'));
     }
 
