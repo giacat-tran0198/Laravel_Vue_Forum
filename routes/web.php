@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ThreadController;
 
@@ -25,11 +26,12 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::resource('threads', 'ThreadController')->except('show');
+Route::resource('threads', 'ThreadController')->except(['show', 'destroy']);
 Route::get('/threads/{channel}', [ThreadController::class, 'index'])->name('threads.index.channel');
 Route::post('/threads/{channel}/{thread}/replies', [ReplyController::class, 'store']);
 Route::get('/threads/{channel}/{thread}', [ThreadController::class, 'show'])->name('threads.show');
+Route::delete('/threads/{channel}/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
 
 Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])->name('replies.favorites');
 
-Route::get('/profiles/{user}', [\App\Http\Controllers\ProfilesController::class, 'show'])->name('profiles');
+Route::get('/profiles/{user}', [ProfilesController::class, 'show'])->name('profiles');
