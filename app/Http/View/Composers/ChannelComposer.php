@@ -17,6 +17,9 @@ class ChannelComposer
      */
     public function compose(View $view)
     {
-        $view->with('channels', Channel::all());
+        $channel = \Cache::rememberForever('channels', function (){
+            return Channel::all();
+        });
+        $view->with('channels', $channel);
     }
 }

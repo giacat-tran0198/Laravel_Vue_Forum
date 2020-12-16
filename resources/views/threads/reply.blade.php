@@ -10,7 +10,7 @@
                 <form method="post" action="{{route('replies.favorites', ['reply' => $reply->id])}}">
                     @csrf
                     <button type="submit" class="btn btn-info" {{$reply->isFavorited() ? 'disabled' : ''}}>
-                        J'aimme {{$reply->favorites->count()}} <i class="{{$reply->isFavorited() ? 'fas' : 'far'}} fa-heart"></i></button>
+                        J'aimme {{$reply->favorites_count}} <i class="{{$reply->isFavorited() ? 'fas' : 'far'}} fa-heart"></i></button>
                 </form>
             </div>
         </div>
