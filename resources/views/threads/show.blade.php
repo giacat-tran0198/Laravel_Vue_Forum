@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <a href="{{route('profiles', $thread->creator)}}">{{$thread->creator->name}}</a>
-                        a posté:
+                        a publié:
                         {{$thread->title}}
                     </div>
 
