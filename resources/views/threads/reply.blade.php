@@ -2,7 +2,7 @@
     <div class="card-header">
         <div class="level">
             <h6 class="flex">
-                <a href="{{route('threads.index', ['by' => $reply->owner->name])}}">
+                <a href="{{route('profiles', $reply->owner)}}">
                     {{$reply->owner->name}}
                 </a> a publié {{$reply->created_at->diffForHumans()}} ...
             </h6>
@@ -10,7 +10,8 @@
                 <form method="post" action="{{route('replies.favorites', ['reply' => $reply->id])}}">
                     @csrf
                     <button type="submit" class="btn btn-info" {{$reply->isFavorited() ? 'disabled' : ''}}>
-                        J'aimme {{$reply->favorites_count}} <i class="{{$reply->isFavorited() ? 'fas' : 'far'}} fa-heart"></i></button>
+                        J'aimme {{$reply->favorites_count}} <i
+                            class="{{$reply->isFavorited() ? 'fas' : 'far'}} fa-heart"></i></button>
                 </form>
             </div>
         </div>
