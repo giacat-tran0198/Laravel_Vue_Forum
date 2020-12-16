@@ -11,13 +11,13 @@
                             <a href="{{route('profiles', $thread->creator)}}">{{$thread->creator->name}}</a> a publié:
                             {{$thread->title}}
                             </span>
-                            @if(Auth::check())
+                            @can('update', $thread)
                                 <form action="{{$thread->path()}}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Supprimer</button>
                                 </form>
-                            @endif
+                            @endcan
                         </div>
                     </div>
 

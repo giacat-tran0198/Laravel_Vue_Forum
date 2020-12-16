@@ -56,7 +56,7 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function a_thread_requires_a_valid_channel ()
+    public function a_thread_requires_a_valid_channel()
     {
         factory(Channel::class, 2)->create();
         $this->publishThread(['channel_id' => null])
@@ -67,22 +67,25 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    function guests_cannot_delete_threads()
+    function unauthorized_users_may_not_delete_threads()
     {
         $this->withExceptionHandling();
 
         $thread = create(Thread::class);
 
-        $response = $this->delete($thread->path());
+        $this->delete($thread->path())
+            ->assertRedirect(route('login'));
 
-        $response->assertRedirect(route('login'));
+        $this->signIn()
+            ->delete($thread->path())
+            ->assertStatus(403);;
     }
 
     /** @test */
-    public function a_thread_can_be_deleted()
+    public function authorized_users_can_delete_threads()
     {
         $this->signIn();
-        $thread = create(Thread::class);
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
         $reply = create(Reply::class, ['thread_id' => $thread->id]);
 
         $response = $this->deleteJson(url($thread->path()));
