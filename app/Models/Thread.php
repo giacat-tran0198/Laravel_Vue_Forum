@@ -3,11 +3,17 @@
 namespace App\Models;
 
 use App\Filters\ThreadFilter;
+use App\Observers\ThreadObserver;
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    use RecordsActivity;
+
+    protected $activitiesToRecord = ['created'];
+
     protected $guarded = [];
 
     protected $with = ['creator', 'channel'];
@@ -20,9 +26,7 @@ class Thread extends Model
             $builder->withCount('replies');
         });
 
-        static::deleting(function (Thread $thread){
-            $thread->replies()->delete();
-        });
+        static::observe(ThreadObserver::class);
     }
 
 
