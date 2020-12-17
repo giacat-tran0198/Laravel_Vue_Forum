@@ -22,9 +22,9 @@ class ProfilesTest extends TestCase
     /** @test */
     public function profiles_display_all_threads_created_by_the_associated_user()
     {
-        $user = create(User::class);
-        $thread = create(Thread::class, ['user_id' => $user->id]);
-        $this->get(route('profiles', $user))
+        $this->signIn();
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $this->get(route('profiles', auth()->user()))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
