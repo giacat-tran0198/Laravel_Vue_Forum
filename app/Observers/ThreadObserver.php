@@ -26,7 +26,7 @@ class ThreadObserver
      */
     public function deleting(Thread $thread)
     {
-        $thread->replies()->delete();
+        $thread->replies->each->delete();
     }
 
 }

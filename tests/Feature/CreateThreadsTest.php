@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Activity;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
@@ -91,8 +92,9 @@ class CreateThreadsTest extends TestCase
         $response = $this->deleteJson(url($thread->path()));
         $response->assertStatus(204);
 
-        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
-        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertDatabaseMissing(app(Thread::class)->getTable(), ['id' => $thread->id]);
+        $this->assertDatabaseMissing(app(Reply::class)->getTable(), ['id' => $reply->id]);
+        $this->assertEquals(0, Activity::count());
     }
 
     public function publishThread(array $overrides = [])
