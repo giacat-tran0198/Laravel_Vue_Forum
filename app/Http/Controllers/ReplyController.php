@@ -55,7 +55,8 @@ class ReplyController extends Controller
             'body' => $request->get('body'),
             'user_id' => auth()->id(),
         ]);
-        return back();
+        return back()
+            ->with('flash', 'Votre réponse a été laissée.');
     }
 
     /**
