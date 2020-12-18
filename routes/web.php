@@ -33,5 +33,6 @@ Route::get('/threads/{channel}/{thread}', [ThreadController::class, 'show'])->na
 Route::delete('/threads/{channel}/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
 
 Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])->name('replies.favorites');
+Route::delete('/replies/{reply}/favorites', [ReplyController::class, 'destroy'])->name('replies.destroy');
 
 Route::get('/profiles/{user}', [ProfilesController::class, 'show'])->name('profiles');
