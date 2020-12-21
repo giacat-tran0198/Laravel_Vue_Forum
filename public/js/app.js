@@ -1981,6 +1981,12 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (e) {
         console.log(e);
       });
+    },
+    destroy: function destroy() {
+      axios["delete"]('/replies/' + this.attributes.id);
+      $(this.$el).fadeOut(300, function () {
+        flash("Votre commentaire a été supprimé.");
+      });
     }
   }
 });

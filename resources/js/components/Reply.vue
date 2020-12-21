@@ -18,6 +18,13 @@ export default {
             }).catch(e => {
                 console.log(e)
             })
+        },
+
+        destroy(){
+            axios.delete('/replies/'+this.attributes.id);
+            $(this.$el).fadeOut(300, () => {
+                flash("Votre commentaire a été supprimé.");
+            });
 
         }
     }

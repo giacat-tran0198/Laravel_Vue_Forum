@@ -106,6 +106,9 @@ class ReplyController extends Controller
         $this->authorize('update', $reply);
 
         $reply->delete();
+        if (request()->wantsJson()){
+            return response(['statut' => 'Commentaire supprimé']);
+        }
         return back();
     }
 }
