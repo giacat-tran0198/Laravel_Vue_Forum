@@ -33,6 +33,7 @@ Route::get('/threads/{channel}/{thread}', [ThreadController::class, 'show'])->na
 Route::delete('/threads/{channel}/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
 
 Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])->name('replies.favorites');
+Route::delete('/replies/{reply}/favorites', [FavoriteController::class, 'destroy'])->name('replies.favorites.destroy');
 Route::delete('/replies/{reply}', [ReplyController::class, 'destroy'])->name('replies.destroy');
 Route::patch('/replies/{reply}', [ReplyController::class, 'update'])->name('replies.update');
 

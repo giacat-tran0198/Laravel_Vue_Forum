@@ -7,14 +7,11 @@
                         {{$reply->owner->name}}
                     </a> a publié {{$reply->created_at->diffForHumans()}} ...
                 </h6>
-                <div>
-                    <form method="post" action="{{route('replies.favorites', ['reply' => $reply->id])}}">
-                        @csrf
-                        <button type="submit" class="btn btn-info" {{$reply->isFavorited() ? 'disabled' : ''}}>
-                            J'aimme {{$reply->favorites_count}} <i
-                                class="{{$reply->isFavorited() ? 'fas' : 'far'}} fa-heart"></i></button>
-                    </form>
-                </div>
+                @if(Auth::check())
+                    <div>
+                        <favorite :reply="{{$reply}}"></favorite>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="card-body">

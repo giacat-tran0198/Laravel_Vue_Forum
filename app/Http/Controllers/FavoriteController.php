@@ -88,8 +88,8 @@ class FavoriteController extends Controller
      * @param \App\Models\Favorite $favorite
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Favorite $favorite)
+    public function destroy(Reply $reply)
     {
-        //
+        $reply->unfavorite();
     }
 }

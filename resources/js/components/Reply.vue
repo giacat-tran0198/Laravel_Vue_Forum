@@ -1,7 +1,10 @@
 <script>
+import Favorite from './Favorite';
+
 export default {
     name: "Reply",
     props: ['attributes'],
+    components: {Favorite},
     data() {
         return {
             editing: false,
@@ -20,8 +23,8 @@ export default {
             })
         },
 
-        destroy(){
-            axios.delete('/replies/'+this.attributes.id);
+        destroy() {
+            axios.delete('/replies/' + this.attributes.id);
             $(this.$el).fadeOut(300, () => {
                 flash("Votre commentaire a été supprimé.");
             });
