@@ -29,7 +29,7 @@
     </div>
 </template>
 <script>
-import Favorite from './Favorite';
+import Favorite from '../Favorite';
 
 export default {
     name: "Reply",

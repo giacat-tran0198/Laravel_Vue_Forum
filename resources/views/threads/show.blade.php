@@ -26,24 +26,11 @@
                             {{$thread->body}}
                         </div>
                     </div>
-                    <replies :data="{{$thread->replies}}" @removed="repliesCount--"></replies>
+                    <replies :data="{{$thread->replies}}"
+                             @added="repliesCount++"
+                             @removed="repliesCount--">
+                    </replies>
                     {{--                {{$replies->links()}}--}}
-                    <div class="mt-3">
-                        @if(auth()->check())
-                            <form action="{{url($thread->path().'/replies')}}" method="post">
-                                @csrf
-                                <div class="form-group">
-                            <textarea name="body" id="body" class="form-control" placeholder="Que voulez-vous dire?"
-                                      rows="5"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Publier</button>
-                            </form>
-                        @else
-                            <p class="text-center">Veuillez vous <a href="{{route('login')}}">connecter</a> pour
-                                participer
-                                à cette discussion</p>
-                        @endif
-                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">

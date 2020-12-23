@@ -1,5 +1,5 @@
 <script>
-import Replies from "../components/Replies.vue"
+import Replies from "../components/reply/Replies.vue"
 export default {
     name: "Thread",
     components: {Replies},
