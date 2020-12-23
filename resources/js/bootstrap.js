@@ -10,9 +10,14 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
     window.Vue = require('vue');
+    window.Vue.prototype.authorize = function (handler) {
+        let user = window.App.user;
+        return user ? handler(user) : false;
+    }
 
     require('bootstrap');
-} catch (e) {}
+} catch (e) {
+}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -23,6 +28,7 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.App.csrfToken;
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
