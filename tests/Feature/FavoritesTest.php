@@ -31,7 +31,6 @@ class FavoritesTest extends TestCase
     {
         $this->signIn();
         $reply = create(Reply::class);
-        dd(route('replies.favorites.destroy', ['reply' => $reply->id]));
         $reply->favorite();
 
         $this->delete(route('replies.favorites.destroy', ['reply' => $reply->id]));

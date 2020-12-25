@@ -4,7 +4,7 @@
             <div class="level">
                 <h6 class="flex">
                     <a :href="'/profiles/'+data.owner.name" v-text="data.owner.name">
-                    </a> a publié {{ data.created_at }} ...
+                    </a> a publié <span v-text="ago"></span> ...
                 </h6>
                 <div v-if="signedIn">
                     <favorite :reply="data"></favorite>
@@ -30,7 +30,8 @@
 </template>
 <script>
 import Favorite from '../Favorite';
-
+import moment from 'moment'
+import 'moment/locale/fr'
 export default {
     name: "Reply",
     props: ['data'],
@@ -49,6 +50,9 @@ export default {
         canUpdate() {
             return this.authorize(user => this.data.user_id == user.id)
         },
+        ago(){
+            return moment(this.data.created_at).locale('fr').fromNow();
+        }
     },
     methods: {
         update() {

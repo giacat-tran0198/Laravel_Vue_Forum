@@ -28,6 +28,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::resource('threads', 'ThreadController')->except(['show', 'destroy']);
 Route::get('/threads/{channel}', [ThreadController::class, 'index'])->name('threads.index.channel');
+Route::get('/threads/{channel}/{thread}/replies', [ReplyController::class, 'index']);
 Route::post('/threads/{channel}/{thread}/replies', [ReplyController::class, 'store']);
 Route::get('/threads/{channel}/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 Route::delete('/threads/{channel}/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
