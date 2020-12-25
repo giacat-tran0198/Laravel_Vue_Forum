@@ -4,12 +4,10 @@ namespace Tests\Unit;
 
 
 use App\Models\Channel;
-use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use phpDocumentor\Reflection\Types\This;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
@@ -63,5 +61,23 @@ class ThreadTest extends TestCase
     {
         $thread = create(Thread::class);
         $this->assertInstanceOf(Channel::class, $thread->channel);
+    }
+
+    /** @test */
+    public function a_thread_can_be_subscribed_to()
+    {
+        $thread = create(Thread::class);
+        $thread->subscribe($userId = 1);
+        $this->assertEquals(1, $thread->subscription()->where('user_id', $userId)->count());
+    }
+
+    /** @test */
+    public function a_thread_can_be_unsubscribed_to()
+    {
+        $thread = create(Thread::class);
+        $thread->subscribe($userId = 1);
+        $this->assertEquals(1, $thread->subscription()->where('user_id', $userId)->count());
+        $thread->unsubscribe($userId = 1);
+        $this->assertEquals(0, $thread->subscription()->where('user_id', $userId)->count());
     }
 }
