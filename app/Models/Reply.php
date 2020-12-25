@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\ReplyObserver;
 use App\Traits\Favoritable;
 use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,13 @@ class Reply extends Model
     protected $with = ['owner', 'favorites'];
 
     protected $appends = ['favoritesCount', 'isFavorited'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::observe(ReplyObserver::class);
+    }
 
     public function owner()
     {

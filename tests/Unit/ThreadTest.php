@@ -64,14 +64,4 @@ class ThreadTest extends TestCase
         $thread = create(Thread::class);
         $this->assertInstanceOf(Channel::class, $thread->channel);
     }
-
-    /** @test */
-    public function a_user_can_request_all_replies_for_a_given_thread()
-    {
-        $thread = create(Thread::class);
-        create(Reply::class, ['thread_id' => $thread->id], 2);
-        $response = $this->getJson($thread->path().'/replies')->json();
-        $this->assertCount(2, $response['data']);
-        $this->assertEquals(2, $response['total']);
-    }
 }

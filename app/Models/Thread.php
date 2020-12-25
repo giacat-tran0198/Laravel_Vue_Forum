@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Filters\ThreadFilter;
 use App\Observers\ThreadObserver;
 use App\Traits\RecordsActivity;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
@@ -21,10 +20,6 @@ class Thread extends Model
     protected static function boot()
     {
         parent::boot();
-
-        static::addGlobalScope('replyCount', function (Builder $builder) {
-            $builder->withCount('replies');
-        });
 
         static::observe(ThreadObserver::class);
     }

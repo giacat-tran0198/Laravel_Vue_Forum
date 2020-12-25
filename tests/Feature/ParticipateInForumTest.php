@@ -26,8 +26,8 @@ class ParticipateInForumTest extends TestCase
         $thread = create(Thread::class);
         $reply = make(Reply::class);
         $this->post($thread->path() . '/replies', $reply->toArray());
-        $this->get($thread->path())
-            ->assertSee($reply->body);
+        $this->assertDatabaseHas(app(Reply::class)->getTable(), ['body' => $reply->body]);
+        $this->assertEquals(1, $thread->fresh()->replies_count);
     }
 
     /** @test */
@@ -64,6 +64,7 @@ class ParticipateInForumTest extends TestCase
             ->assertStatus(302);
 
         $this->assertDatabaseMissing(app(Reply::class)->getTable(), ['id' => $reply->id]);
+        $this->assertEquals(0, $reply->thread->fresh()->replies_count);
     }
 
     /** @test */

@@ -30,6 +30,9 @@
                         <a class="dropdown-item"
                            href="{{route('threads.index', ['popular' => 1])}}">{{__('Le plus populaire des discussions')}}</a>
 
+                        <a class="dropdown-item"
+                           href="{{route('threads.index', ['unanswered' => 1])}}">{{__('Des discussions sans réponse')}}</a>
+
                     </div>
                 </li>
 
