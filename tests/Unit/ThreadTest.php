@@ -68,7 +68,7 @@ class ThreadTest extends TestCase
     {
         $thread = create(Thread::class);
         $thread->subscribe($userId = 1);
-        $this->assertEquals(1, $thread->subscription()->where('user_id', $userId)->count());
+        $this->assertEquals(1, $thread->subscriptions()->where('user_id', $userId)->count());
     }
 
     /** @test */
@@ -76,8 +76,18 @@ class ThreadTest extends TestCase
     {
         $thread = create(Thread::class);
         $thread->subscribe($userId = 1);
-        $this->assertEquals(1, $thread->subscription()->where('user_id', $userId)->count());
+        $this->assertEquals(1, $thread->subscriptions()->where('user_id', $userId)->count());
         $thread->unsubscribe($userId = 1);
-        $this->assertEquals(0, $thread->subscription()->where('user_id', $userId)->count());
+        $this->assertEquals(0, $thread->subscriptions()->where('user_id', $userId)->count());
+    }
+
+    /** @test */
+    public function it_knows_if_the_authenticated_user_is_subscribed_to_it()
+    {
+        $thread = create(Thread::class);
+        $this->signIn();
+        $this->assertFalse($thread->isSubscribedTo);
+        $thread->subscribe();
+        $this->assertTrue($thread->isSubscribedTo);
     }
 }

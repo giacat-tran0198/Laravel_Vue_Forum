@@ -16,6 +16,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\ThreadSubscriptionsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,6 +33,9 @@ Route::get('/threads/{channel}/{thread}/replies', [ReplyController::class, 'inde
 Route::post('/threads/{channel}/{thread}/replies', [ReplyController::class, 'store']);
 Route::get('/threads/{channel}/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 Route::delete('/threads/{channel}/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
+
+Route::post('/threads/{channel}/{thread}/subscriptions', [ThreadSubscriptionsController::class, 'store'])->middleware('auth');
+Route::delete('/threads/{channel}/{thread}/subscriptions', [ThreadSubscriptionsController::class, 'destroy'])->middleware('auth');
 
 Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])->name('replies.favorites');
 Route::delete('/replies/{reply}/favorites', [FavoriteController::class, 'destroy'])->name('replies.favorites.destroy');
