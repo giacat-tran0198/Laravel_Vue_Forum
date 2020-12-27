@@ -17,6 +17,7 @@ use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\ThreadSubscriptionsController;
+use App\Http\Controllers\UserNotificationsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,3 +44,5 @@ Route::delete('/replies/{reply}', [ReplyController::class, 'destroy'])->name('re
 Route::patch('/replies/{reply}', [ReplyController::class, 'update'])->name('replies.update');
 
 Route::get('/profiles/{user}', [ProfilesController::class, 'show'])->name('profiles');
+Route::get('/profiles/{user}/notifications', [UserNotificationsController::class, 'index'])->name('profiles.notification.index');
+Route::delete('/profiles/{user}/notifications/{notification}', [UserNotificationsController::class, 'destroy'])->name('profiles.notification.destroy');
