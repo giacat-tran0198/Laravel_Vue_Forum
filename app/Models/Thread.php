@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ThreadHasNewReply;
 use App\Filters\ThreadFilter;
 use App\Observers\ThreadObserver;
 use App\Traits\RecordsActivity;
@@ -40,13 +41,16 @@ class Thread extends Model
     public function addReply($reply)
     {
         $reply = $this->replies()->create($reply);
+        $this->notifySubscribers($reply);
+        return $reply;
+    }
 
+    public function notifySubscribers(Reply $reply)
+    {
         $this->subscriptions
             ->where('user_id', '!=', $reply->user_id)
             ->each
             ->notify($reply);
-
-        return $reply;
     }
 
     public function creator()
