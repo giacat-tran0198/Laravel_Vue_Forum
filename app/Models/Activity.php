@@ -20,8 +20,6 @@ class Activity extends Model
             ->with('subject')
             ->take($take)
             ->get()
-            ->groupBy(function ($activity) {
-                return $activity->created_at->format('Y-m-d');
-            });
+            ->groupBy(fn($activity) => $activity->created_at->format('Y-m-d'));
     }
 }

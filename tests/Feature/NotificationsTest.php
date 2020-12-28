@@ -57,12 +57,10 @@ class NotificationsTest extends TestCase
     public function a_user_can_mark_a_notification_as_read()
     {
         create(DatabaseNotification::class);
-        tap(auth()->user(), function (User $user){
-            $this->assertCount(1, $user->unreadNotifications);
-
-            $this->delete(route('profiles.notification.destroy', [$user, $user->unreadNotifications->first()->id]));
-
-            $this->assertCount(0, $user->fresh()->unreadNotifications);
-        });
+        tap(auth()->user(), fn(User $user) => [
+            $this->assertCount(1, $user->unreadNotifications),
+            $this->delete(route('profiles.notification.destroy', [$user, $user->unreadNotifications->first()->id])),
+            $this->assertCount(0, $user->fresh()->unreadNotifications)
+        ]);
     }
 }

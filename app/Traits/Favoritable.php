@@ -5,15 +5,12 @@ namespace App\Traits;
 
 
 use App\Models\Favorite;
-use Illuminate\Database\Eloquent\Model;
 
 trait Favoritable
 {
     protected static function bootFavoritable()
     {
-        static::deleting(function ($model){
-            $model->favorites->each->delete();
-        });
+        static::deleting(fn ($model) => [$model->favorites->each->delete()]);
     }
 
 

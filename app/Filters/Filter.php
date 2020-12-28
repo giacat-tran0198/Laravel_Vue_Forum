@@ -38,12 +38,8 @@ abstract class Filter
         $this->builder = $builder;
 
         $this->getFilters()
-            ->filter(function ($filter) {
-                return method_exists($this, $filter);
-            })
-            ->each(function ($filter, $value) {
-                $this->$filter($value);
-            });
+            ->filter(fn($filter) => method_exists($this, $filter))
+            ->each(fn ($filter, $value) => [$this->$filter($value)]);
 
         return $this->builder;
 
