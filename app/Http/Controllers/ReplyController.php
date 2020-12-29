@@ -47,13 +47,9 @@ class ReplyController extends Controller
      * @param Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Channel $channel, Thread $thread, Spam $spam)
+    public function store(Request $request, Channel $channel, Thread $thread)
     {
-        $request->validate([
-            'body' => 'required',
-        ]);
-
-        $spam->detect($request->get('body'));
+        $this->validateReply();
 
         $reply = $thread->addReply([
             'body' => $request->get('body'),
@@ -95,9 +91,10 @@ class ReplyController extends Controller
      * @param \App\Models\Reply $reply
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reply $reply)
+    public function update(Request $request, Reply $reply, Spam $spam)
     {
         $this->authorize('update', $reply);
+        $this->validateReply();
 
         $reply->update($request->all('body'));
     }
@@ -117,5 +114,14 @@ class ReplyController extends Controller
             return response(['statut' => 'Commentaire supprimé']);
         }
         return back();
+    }
+
+    protected function validateReply()
+    {
+        \request()->validate([
+            'body' => 'required',
+        ]);
+
+        resolve(Spam::class)->detect(\request()->get('body'));
     }
 }
