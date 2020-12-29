@@ -12,7 +12,9 @@ trait RecordsActivity
     {
         if (auth()->guest()) return;
         foreach (static::getActivitiesToRecord() as $event) {
-            static::$event(fn ($model) => [$model->recordActivity($event)]);
+            static::$event(function ($model) use ($event) {
+                $model->recordActivity($event);
+            });
         }
 
         static::deleting(function ($model) {
