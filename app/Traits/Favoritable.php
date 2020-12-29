@@ -10,7 +10,9 @@ trait Favoritable
 {
     protected static function bootFavoritable()
     {
-        static::deleting(fn ($model) => [$model->favorites->each->delete()]);
+        static::deleting(function ($model){
+            $model->favorites->each->delete();
+        });
     }
 
 
