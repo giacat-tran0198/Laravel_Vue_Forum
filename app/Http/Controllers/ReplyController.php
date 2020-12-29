@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Inspections\Spam;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
@@ -46,11 +47,14 @@ class ReplyController extends Controller
      * @param Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Channel $channel, Thread $thread)
+    public function store(Request $request, Channel $channel, Thread $thread, Spam $spam)
     {
         $request->validate([
             'body' => 'required',
         ]);
+
+        $spam->detect($request->get('body'));
+
         $reply = $thread->addReply([
             'body' => $request->get('body'),
             'user_id' => auth()->id(),

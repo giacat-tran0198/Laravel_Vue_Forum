@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Exceptions\SpamException;
 use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -87,5 +88,16 @@ class ParticipateInForumTest extends TestCase
         $updatedReply = 'Modification';
         $this->patch(route('replies.update', $reply->id), ['body' => $updatedReply]);
         $this->assertDatabaseHas(app(Reply::class)->getTable(), ['id' => $reply->id, 'body' => $updatedReply]);
+    }
+
+    /** @test */
+    public function replies_that_contain_spam_may_not_be_created()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn();
+        $thread = create(Thread::class);
+        $reply = make(Reply::class, ['body' => 'yahoo customer support']);
+        $this->expectException(SpamException::class);
+        $this->post($thread->path().'/replies', $reply->toArray());
     }
 }
