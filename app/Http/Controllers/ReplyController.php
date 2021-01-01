@@ -49,17 +49,17 @@ class ReplyController extends Controller
      */
     public function store(Request $request, Channel $channel, Thread $thread)
     {
-        $this->validateReply();
+        try {
+            $this->validateReply();
 
-        $reply = $thread->addReply([
-            'body' => $request->get('body'),
-            'user_id' => auth()->id(),
-        ]);
-        if ($request->expectsJson()){
-            return $reply->load('owner');
+            $reply = $thread->addReply([
+                'body' => $request->get('body'),
+                'user_id' => auth()->id(),
+            ]);
+        } catch (\Exception $e) {
+            return response('Désolé, vous ne pouvez pas enregistrer en ce moment.', 422);
         }
-        return back()
-            ->with('flash', 'Votre réponse a été laissée.');
+        return $reply->load('owner');
     }
 
     /**
@@ -94,9 +94,13 @@ class ReplyController extends Controller
     public function update(Request $request, Reply $reply, Spam $spam)
     {
         $this->authorize('update', $reply);
-        $this->validateReply();
+        try {
+            $this->validateReply();
 
-        $reply->update($request->all('body'));
+            $reply->update($request->all('body'));
+        } catch (\Exception $e) {
+            return response('Désolé, vous ne pouvez pas enregistrer en ce moment.', 422);
+        }
     }
 
     /**
@@ -110,7 +114,7 @@ class ReplyController extends Controller
         $this->authorize('update', $reply);
 
         $reply->delete();
-        if (request()->wantsJson()){
+        if (request()->wantsJson()) {
             return response(['statut' => 'Commentaire supprimé']);
         }
         return back();

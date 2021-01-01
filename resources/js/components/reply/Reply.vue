@@ -32,6 +32,7 @@
 import Favorite from '../Favorite';
 import moment from 'moment'
 import 'moment/locale/fr'
+
 export default {
     name: "Reply",
     props: ['data'],
@@ -50,7 +51,7 @@ export default {
         canUpdate() {
             return this.authorize(user => this.data.user_id == user.id)
         },
-        ago(){
+        ago() {
             return moment(this.data.created_at).locale('fr').fromNow();
         }
     },
@@ -61,8 +62,8 @@ export default {
             }).then(() => {
                 this.editing = false;
                 flash('Mis à jour')
-            }).catch(e => {
-                console.log(e)
+            }).catch(error => {
+                flash(error.response.data, 'danger');
             })
         },
 

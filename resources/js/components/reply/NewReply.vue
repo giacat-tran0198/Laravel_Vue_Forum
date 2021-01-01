@@ -36,6 +36,9 @@ export default {
                     flash('Votre commentaire a été publié');
                     this.$emit('created', data);
                 })
+                .catch(error => {
+                    flash(error.response.data, 'danger');
+                })
         }
     }
 }
