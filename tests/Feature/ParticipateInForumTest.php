@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Exceptions\SpamException;
 use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -40,7 +39,7 @@ class ParticipateInForumTest extends TestCase
         $reply = make(Reply::class, ['body' => null]);
 
         $this->post($thread->path() . '/replies', $reply->toArray())
-            ->assertSessionHasErrors('body');
+            ->assertStatus(422);
     }
 
     /** @test */
@@ -97,7 +96,7 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
         $thread = create(Thread::class);
         $reply = make(Reply::class, ['body' => 'yahoo customer support']);
-        $this->expectException(SpamException::class);
-        $this->post($thread->path().'/replies', $reply->toArray());
+        $this->post($thread->path().'/replies', $reply->toArray())
+            ->assertStatus(422);
     }
 }

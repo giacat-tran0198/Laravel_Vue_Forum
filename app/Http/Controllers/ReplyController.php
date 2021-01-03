@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Inspections\Spam;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
@@ -50,7 +49,7 @@ class ReplyController extends Controller
     public function store(Request $request, Channel $channel, Thread $thread)
     {
         try {
-            $this->validateReply();
+            $request->validate(['body' => 'required|spamfree']);
 
             $reply = $thread->addReply([
                 'body' => $request->get('body'),
@@ -91,11 +90,11 @@ class ReplyController extends Controller
      * @param \App\Models\Reply $reply
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reply $reply, Spam $spam)
+    public function update(Request $request, Reply $reply)
     {
         $this->authorize('update', $reply);
         try {
-            $this->validateReply();
+            $this->validate(request(), ['body' => 'required|spamfree']);
 
             $reply->update($request->all('body'));
         } catch (\Exception $e) {
@@ -118,14 +117,5 @@ class ReplyController extends Controller
             return response(['statut' => 'Commentaire supprimé']);
         }
         return back();
-    }
-
-    protected function validateReply()
-    {
-        \request()->validate([
-            'body' => 'required',
-        ]);
-
-        resolve(Spam::class)->detect(\request()->get('body'));
     }
 }

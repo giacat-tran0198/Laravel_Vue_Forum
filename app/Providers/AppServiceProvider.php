@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->isLocal()){
+        if ($this->app->isLocal()) {
             $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
         }
     }
@@ -25,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
     }
 }
