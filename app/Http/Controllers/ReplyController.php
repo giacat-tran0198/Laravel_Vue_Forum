@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostForm;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class ReplyController extends Controller
 {
@@ -42,27 +42,19 @@ class ReplyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
      * @param Channel $channel
      * @param Thread $thread
+     * @param CreatePostForm $form
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Channel $channel, Thread $thread)
+    public function store(Channel $channel, Thread $thread, CreatePostForm $form)
     {
-        if (Gate::denies('create', new Reply)) {
-            return response('Vous postez trop fréquemment. Veuillez faire une pause.', 429);
-        }
-        try {
-            $request->validate(['body' => 'required|spamfree']);
-
-            $reply = $thread->addReply([
-                'body' => $request->get('body'),
+        return $thread
+            ->addReply([
+                'body' => request('body'),
                 'user_id' => auth()->id(),
-            ]);
-        } catch (\Exception $e) {
-            return response('Désolé, vous ne pouvez pas enregistrer en ce moment.', 422);
-        }
-        return $reply->load('owner');
+            ])
+            ->load('owner');
     }
 
     /**
