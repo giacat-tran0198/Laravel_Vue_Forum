@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Exceptions\ThrottleException;
 use App\Models\Reply;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
