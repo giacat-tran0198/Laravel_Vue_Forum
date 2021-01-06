@@ -16,13 +16,13 @@
             <div v-if="editing">
                 <form @submit="update">
                     <div class="form-group">
-                        <textarea class="form-control" v-model="body" required></textarea>
+                        <textarea class="form-control" v-html="body" required></textarea>
                     </div>
                     <button class="btn btn-primary btn-sm">Actualiser</button>
                     <button class="btn btn-link btn-sm" @click="editing = false" type="button">Annuler</button>
                 </form>
             </div>
-            <div v-else v-text="body"></div>
+            <div v-else v-html="body"></div>
         </div>
         <div class="card-footer level" v-if="canUpdate">
             <button class="btn btn-info btn-sm mr-1" @click="editing = true">Modifier</button>
