@@ -89,13 +89,8 @@ class ReplyController extends Controller
     public function update(Request $request, Reply $reply)
     {
         $this->authorize('update', $reply);
-        try {
-            $this->validate(request(), ['body' => 'required|spamfree']);
-
-            $reply->update($request->all('body'));
-        } catch (\Exception $e) {
-            return response('Désolé, vous ne pouvez pas enregistrer en ce moment.', 422);
-        }
+        $this->validate(request(), ['body' => 'required|spamfree']);
+        $reply->update($request->all('body'));
     }
 
     /**
