@@ -49,3 +49,4 @@ Route::get('/profiles/{user}/notifications', [UserNotificationsController::class
 Route::delete('/profiles/{user}/notifications/{notification}', [UserNotificationsController::class, 'destroy'])->name('profiles.notification.destroy');
 
 Route::get('api/users', [UserController::class, 'index']);
+Route::post('api/users/{user}/avatar', [UserController::class, 'storeAva'])->name('user.store.ava');
