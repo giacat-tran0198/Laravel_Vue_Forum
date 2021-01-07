@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfilesController;
@@ -46,3 +47,5 @@ Route::patch('/replies/{reply}', [ReplyController::class, 'update'])->name('repl
 Route::get('/profiles/{user}', [ProfilesController::class, 'show'])->name('profiles');
 Route::get('/profiles/{user}/notifications', [UserNotificationsController::class, 'index'])->name('profiles.notification.index');
 Route::delete('/profiles/{user}/notifications/{notification}', [UserNotificationsController::class, 'destroy'])->name('profiles.notification.destroy');
+
+Route::get('api/users', [UserController::class, 'index']);

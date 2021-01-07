@@ -2,8 +2,9 @@
     <div class="mt-3">
         <div v-if="signedIn">
             <div class="form-group">
-            <textarea name="body" id="body" class="form-control" placeholder="Que voulez-vous dire?" rows="5" required
-                      v-model="body"></textarea>
+                <textarea name="body" id="body" class="form-control" placeholder="Que voulez-vous dire?" rows="5"
+                          required
+                          v-model="body"></textarea>
             </div>
             <button type="submit" class="btn btn-primary" @click="addReply">Publier</button>
         </div>
@@ -16,6 +17,8 @@
 </template>
 
 <script>
+import Tribute from "tributejs";
+
 export default {
     name: "NewReply",
     data() {
@@ -23,10 +26,25 @@ export default {
             body: '',
         }
     },
+    mounted() {
+        let tribute = new Tribute({
+            // column to search against in the object (accepts function or string)
+            lookup: 'value',
+            // column that contains the content to insert by default
+            fillAttr: 'value',
+            values: function (query, cb) {
+                axios.get('/api/users', {params: {name: query}})
+                    .then((response) => {
+                        cb(response.data);
+                    });
+            },
+        });
+        tribute.attach(document.querySelectorAll("#body"));
+    },
     computed: {
         signedIn() {
             return window.App.signedIn;
-        }
+        },
     },
     methods: {
         addReply() {
