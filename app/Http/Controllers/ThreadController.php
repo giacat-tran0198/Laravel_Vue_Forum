@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\ThreadFilter;
 use App\Models\Channel;
 use App\Models\Thread;
+use App\Observers\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -22,17 +23,19 @@ class ThreadController extends Controller
      * Display a listing of the resource.
      *
      * @param Channel|null $channel
+     * @param ThreadFilter $filters
+     * @param Trending $trending
      * @return Response
      */
-    public function index(Channel $channel, ThreadFilter $filters)
+    public function index(Channel $channel, ThreadFilter $filters, Trending $trending)
     {
         $threads = $this->getThreads($filters, $channel);
-
+        $trending = $trending->get();
         if (\request()->wantsJson()) {
             return $threads;
         }
 
-        return view('threads.index', compact('threads'));
+        return view('threads.index', compact('threads', 'trending'));
     }
 
     /**
@@ -74,13 +77,15 @@ class ThreadController extends Controller
      *
      * @param Channel $channel
      * @param Thread $thread
+     * @param Trending $trending
      * @return Response
      */
-    public function show(Channel $channel, Thread $thread)
+    public function show(Channel $channel, Thread $thread, Trending $trending)
     {
         if (auth()->check()) {
             auth()->user()->read($thread);
         }
+        $trending->push($thread);
         return view('threads.show', compact('thread'));
     }
 
