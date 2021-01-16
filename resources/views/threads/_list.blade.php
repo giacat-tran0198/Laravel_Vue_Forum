@@ -26,6 +26,9 @@
         <div class="card-body">
             <div class="card-body">{{$thread->body}}</div>
         </div>
+        <div class="card-footer">
+            {{$thread->visits()}} vu
+        </div>
     </div>
 @empty
     <p>Maintenant, il n'y a pas de résultats pertinents.</p>

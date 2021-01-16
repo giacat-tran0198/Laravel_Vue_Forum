@@ -120,4 +120,16 @@ class ThreadTest extends TestCase
             $this->assertFalse($thread->hasUpdatesFor($user)),
         ]);
     }
+
+    /** @test */
+    public function a_thread_records_each_visit()
+    {
+        $thread = make(Thread::class, ['id' => 1]);
+        $thread->resetVisit();
+        $this->assertEquals(0, $thread->visits());
+        $thread->recordVisit();
+        $this->assertEquals(1, $thread->visits());
+        $thread->recordVisit();
+        $this->assertEquals(2, $thread->visits());
+    }
 }
