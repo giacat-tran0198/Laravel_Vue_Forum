@@ -6,12 +6,11 @@ use App\Events\ThreadReceivedNewReplyEvent;
 use App\Filters\ThreadFilter;
 use App\Observers\ThreadObserver;
 use App\Traits\RecordsActivity;
-use App\Traits\RecordsVisits;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use RecordsActivity, RecordsVisits;
+    use RecordsActivity;
 
     protected $activitiesToRecord = ['created'];
 
