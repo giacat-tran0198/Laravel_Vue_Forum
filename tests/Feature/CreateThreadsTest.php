@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -31,17 +32,22 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    function authenticated_users_must_first_confirm_their_email_address_before_creating_threads()
+    function new_users_must_first_confirm_their_email_address_before_creating_threads()
     {
-        $this->publishThread()
+        $user = factory(User::class)->state('unconfirmed')->create();
+        $this->signIn($user);
+
+        $thread = make(Thread::class);
+        $this->post(route('threads.store'), $thread->toArray())
             ->assertRedirect(route('threads.index'))
             ->assertSessionHas('flash', "Vous devez d'abord confirmer votre adresse e-mail.");
     }
 
     /** @test */
-    public function an_authenticated_user_can_create_new_forum_threads()
+    public function a_user_can_create_new_forum_threads()
     {
-        $this->signIn();
+        $this->withExceptionHandling()
+            ->signIn();
 
         $thread = make(Thread::class);
         $response = $this->post(route('threads.store'), $thread->toArray());
