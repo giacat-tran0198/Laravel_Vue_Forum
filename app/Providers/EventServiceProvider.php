@@ -6,8 +6,8 @@ use App\Events\ThreadReceivedNewReplyEvent;
 use App\Listeners\NotifyMentionedUsersListener;
 use App\Listeners\NotifySubscribersListeners;
 use App\Listeners\NotifyThreadSubscribers;
+use App\Listeners\SendEmailConfirmationRequestListenerr;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -19,7 +19,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [
-            SendEmailVerificationNotification::class,
+//            SendEmailVerificationNotification::class,
+            SendEmailConfirmationRequestListenerr::class,
         ],
         ThreadReceivedNewReplyEvent::class => [
             NotifyMentionedUsersListener::class,
