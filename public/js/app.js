@@ -2034,7 +2034,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['message'],
   data: function data() {
     return {
-      body: '',
+      body: this.message,
       show: false,
       level: 'success'
     };
@@ -2043,7 +2043,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     if (this.message) {
-      this.flash(this.message);
+      this.flash();
     }
 
     window.events.$on('flash', function (data) {
@@ -2052,8 +2052,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     flash: function flash(data) {
-      this.body = data.message;
-      this.level = data.level;
+      if (data) {
+        this.body = data.message;
+        this.level = data.level;
+      }
+
       this.show = true;
       this.hide();
     },
@@ -2314,11 +2317,6 @@ __webpack_require__.r(__webpack_exports__);
     });
     tribute.attach(document.querySelectorAll("#body"));
   },
-  computed: {
-    signedIn: function signedIn() {
-      return window.App.signedIn;
-    }
-  },
   methods: {
     addReply: function addReply() {
       var _this = this;
@@ -2449,6 +2447,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2462,32 +2463,24 @@ __webpack_require__.r(__webpack_exports__);
     return {
       editing: false,
       id: this.data.id,
-      body: this.data.body
+      body: this.data.body,
+      isBest: false,
+      reply: this.data
     };
   },
   computed: {
-    signedIn: function signedIn() {
-      return window.App.signedIn;
-    },
-    canUpdate: function canUpdate() {
-      var _this = this;
-
-      return this.authorize(function (user) {
-        return _this.data.user_id == user.id;
-      });
-    },
     ago: function ago() {
       return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.data.created_at).locale('fr').fromNow();
     }
   },
   methods: {
     update: function update() {
-      var _this2 = this;
+      var _this = this;
 
       axios.patch('/replies/' + this.data.id, {
         body: this.body
       }).then(function () {
-        _this2.editing = false;
+        _this.editing = false;
         flash('Mis à jour');
       })["catch"](function (error) {
         flash(error.response.data, 'danger');
@@ -2496,6 +2489,9 @@ __webpack_require__.r(__webpack_exports__);
     destroy: function destroy() {
       axios["delete"]('/replies/' + this.data.id);
       this.$emit('deleted', this.data.id);
+    },
+    markBestReply: function markBestReply() {
+      this.isBest = true;
     }
   }
 });
@@ -60825,7 +60821,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card my-3", attrs: { id: "reply-" + _vm.id } },
+    {
+      staticClass: "card my-3",
+      class: _vm.isBest ? "border-success" : "",
+      attrs: { id: "reply-" + _vm.id }
+    },
     [
       _c("div", { staticClass: "card-header" }, [
         _c("div", { staticClass: "level" }, [
@@ -60879,31 +60879,42 @@ var render = function() {
           : _c("div", { domProps: { innerHTML: _vm._s(_vm.body) } })
       ]),
       _vm._v(" "),
-      _vm.canUpdate
-        ? _c("div", { staticClass: "card-footer level" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-info btn-sm mr-1",
-                on: {
-                  click: function($event) {
-                    _vm.editing = true
+      _c("div", { staticClass: "card-footer level" }, [
+        _vm.authorize("updateReply", _vm.reply)
+          ? _c("div", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-info btn-sm mr-1",
+                  on: {
+                    click: function($event) {
+                      _vm.editing = true
+                    }
                   }
-                }
-              },
-              [_vm._v("Modifier")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-danger btn-sm mr-1",
-                on: { click: _vm.destroy }
-              },
-              [_vm._v("Supprimer")]
-            )
-          ])
-        : _vm._e()
+                },
+                [_vm._v("Modifier")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger btn-sm mr-1",
+                  on: { click: _vm.destroy }
+                },
+                [_vm._v("Supprimer")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-light btn-sm ml-a",
+            on: { click: _vm.markBestReply }
+          },
+          [_vm._v("Le meilleur")]
+        )
+      ])
     ]
   )
 }
@@ -73118,6 +73129,22 @@ var app = new Vue({
 
 /***/ }),
 
+/***/ "./resources/js/authorizations.js":
+/*!****************************************!*\
+  !*** ./resources/js/authorizations.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var user = window.App.user;
+module.exports = {
+  updateReply: function updateReply(reply) {
+    return parseInt(reply.user_id) === user.id;
+  }
+};
+
+/***/ }),
+
 /***/ "./resources/js/bootstrap.js":
 /*!***********************************!*\
   !*** ./resources/js/bootstrap.js ***!
@@ -73137,10 +73164,23 @@ try {
   window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
   window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-  window.Vue.prototype.authorize = function (handler) {
-    var user = window.App.user;
-    return user ? handler(user) : false;
+  var authorizations = __webpack_require__(/*! ./authorizations */ "./resources/js/authorizations.js");
+
+  window.Vue.prototype.authorize = function () {
+    if (!window.App.signedIn) return false;
+
+    for (var _len = arguments.length, params = new Array(_len), _key = 0; _key < _len; _key++) {
+      params[_key] = arguments[_key];
+    }
+
+    if (typeof params[0] === 'string') {
+      return authorizations[params[0]](params[1]);
+    }
+
+    return params[0](window.App.user);
   };
+
+  window.Vue.prototype.signedIn = window.App.signedIn;
 
   __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 } catch (e) {}

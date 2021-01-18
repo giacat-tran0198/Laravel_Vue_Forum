@@ -41,11 +41,6 @@ export default {
         });
         tribute.attach(document.querySelectorAll("#body"));
     },
-    computed: {
-        signedIn() {
-            return window.App.signedIn;
-        },
-    },
     methods: {
         addReply() {
             axios.post(location.pathname + '/replies', {body: this.body})
