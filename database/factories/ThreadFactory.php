@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Thread::class, function (Faker $faker) {
     return [
+        'slug' => \Str::slug($faker->sentence),
         'user_id' => fn() => factory(User::class),
         'channel_id' => fn() => factory(Channel::class),
         'title' => $faker->sentence,
