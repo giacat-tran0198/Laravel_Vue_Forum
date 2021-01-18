@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Auth\RegisterConfirmationController;
+use App\Http\Controllers\BestRepliesController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfilesController;
@@ -44,6 +45,8 @@ Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])-
 Route::delete('/replies/{reply}/favorites', [FavoriteController::class, 'destroy'])->name('replies.favorites.destroy');
 Route::delete('/replies/{reply}', [ReplyController::class, 'destroy'])->name('replies.destroy');
 Route::patch('/replies/{reply}', [ReplyController::class, 'update'])->name('replies.update');
+
+Route::post('/replies/{reply}/best', [BestRepliesController::class, 'store'])->name('best-replies.store');
 
 Route::get('/profiles/{user}', [ProfilesController::class, 'show'])->name('profiles');
 Route::get('/profiles/{user}/notifications', [UserNotificationsController::class, 'index'])->name('profiles.notification.index');

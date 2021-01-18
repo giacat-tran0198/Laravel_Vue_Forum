@@ -1,5 +1,5 @@
 <template>
-    <div :id="'reply-'+id" class="card my-3">
+    <div :id="'reply-'+id" class="card my-3" :class="isBest ? 'border-success' : ''">
         <div class="card-header">
             <div class="level">
                 <h6 class="flex">
@@ -24,9 +24,12 @@
             </div>
             <div v-else v-html="body"></div>
         </div>
-        <div class="card-footer level" v-if="canUpdate">
-            <button class="btn btn-info btn-sm mr-1" @click="editing = true">Modifier</button>
-            <button class="btn btn-danger btn-sm mr-1" @click="destroy">Supprimer</button>
+        <div class="card-footer level">
+            <div v-if="canUpdate">
+                <button class="btn btn-info btn-sm mr-1" @click="editing = true">Modifier</button>
+                <button class="btn btn-danger btn-sm mr-1" @click="destroy">Supprimer</button>
+            </div>
+            <button class="btn btn-light btn-sm ml-a" @click="markBestReply">Le meilleur</button>
         </div>
     </div>
 </template>
@@ -44,6 +47,7 @@ export default {
             editing: false,
             id: this.data.id,
             body: this.data.body,
+            isBest: false,
         }
     },
     computed: {
@@ -72,7 +76,11 @@ export default {
         destroy() {
             axios.delete('/replies/' + this.data.id);
             this.$emit('deleted', this.data.id);
-        }
+        },
+
+        markBestReply() {
+            this.isBest = true;
+        },
     }
 }
 </script>
