@@ -42,7 +42,10 @@ class RegistrationTest extends TestCase
         $this->assertFalse($user->confirmed);
         $this->assertNotNull($user->confirmation_token);
         $this->get(route('register.confirm', ['token' => $user->confirmation_token]));
-        $this->assertTrue($user->fresh()->confirmed);
+        tap($user->fresh(), fn($user) => [
+            $this->assertTrue($user->confirmed),
+            $this->assertNull($user->confirmation_token),
+        ]);
     }
 
     /** @test */
